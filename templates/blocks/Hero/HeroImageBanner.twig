@@ -1,0 +1,48 @@
+{% import 'macro/el.twig' as el %}
+
+{# Base wrapper classes #}
+{% set wrapper_classes = [
+    'section-hero-home',
+    'relative',
+    'w-full',
+    block.className,
+]|join(' ')|trim %}
+
+{% set img_background = fields.background_image.url ?? 'https://picsum.photos/1920/768' %}
+{% set img_alt = fields.background_image.alt ?? '' %}
+
+<section
+	class="{{ wrapper_classes }}" role="banner" aria-label="Hero section{% if fields.title.label %}: {{ fields.title.label|striptags }}{% endif %}">
+
+	{# Announce background image to screen readers as decorative #}
+	<div class="sr-only" aria-hidden="true">{{ img_alt }}</div>
+
+	<div class="container relative w-full h-full pb-52 bg-{{ block.backgroundColor|default('transparent') }}">
+      <img src="{{ fields.image.url }}" alt="{{ fields.image.alt }}" title="{{ fields.image.title }}" class="w-full h-auto object-cover" aria-hidden="true"/>
+		{# <div class="wrapper-overlay lg:w-[90%] mx-auto w-full h-full relative"> #}
+			
+      <div class="overlay absolute z-20 bottom-32 left-1/2 -translate-x-1/2 mx-auto rounded-xl bg-blue-mid text-white pt-4 pb-14 px-8 lg:w-[90%] w-full right-4">
+        {% if fields.title %}
+            {{ el.heading({ 
+                field: fields.title, 
+                block: block,
+                colors: color,
+                classes: 'titles__main font-oswald uppercase text-[42.25px] font-bold leading-[61.62px]',
+                removeHeadingClass: true
+                })
+            }}
+        {% endif %}
+        <div class="wrapper-cta flex flex-col items-start justify-start absolute -bottom-16 z-30">
+          <a href="{{ fields.cta_link.url }}">
+          <img src="{{ fields.cta_image.url }}" alt="{{ fields.cta_image.alt }}" title="{{ fields.cta_image.title }}" class="mx-auto"/>
+          </a>
+        </div>
+      </div>
+		</div>
+	{# </div> #}
+	{% if fields.bottom_border_image %}
+		<div class="absolute bottom-10 z-10 w-full mb-8">
+			<img src="{{ fields.bottom_border_image.url }}" alt="{{ fields.bottom_border_image.alt }}" class="mx-auto"/>
+		</div>
+	{% endif %}
+</section>

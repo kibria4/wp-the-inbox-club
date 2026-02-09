@@ -1,0 +1,53 @@
+{% import 'macro/el.twig' as el %}
+
+{# Base wrapper classes #}
+{% set wrapper_classes = [
+    'section-hero-home',
+    'relative',
+    'w-full',
+    'bg-cover',
+    'bg-center',
+    'bg-no-repeat',
+    block.className,
+]|join(' ')|trim %}
+
+{% set img_background = fields.background_image.url ?? 'https://picsum.photos/1920/768' %}
+{% set img_alt = fields.background_image.alt ?? '' %}
+
+<section
+	class="{{ wrapper_classes }}" role="banner" aria-label="Hero section{% if fields.title.label %}: {{ fields.title.label|striptags }}{% endif %}">
+
+	{# Announce background image to screen readers as decorative #}
+	<div class="sr-only" aria-hidden="true">{{ img_alt }}</div>
+
+	<div class="container relative w-full h-full pt-12 pb-52" style="background: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url('{{ img_background }}') no-repeat center / cover;">
+		<div class="wrapper-overlay lg:w-[90%] mx-auto w-full h-full relative">
+			<div class="grid lg:grid-cols-2 grid-cols-1 gap-8 items-center justify-center h-full">
+				<div class="filler"></div>
+				<div class="wrapper-text">
+					{% if fields.title %}
+					<h1 class="font-oswald font-bold text-[41.67px] text-right uppercase text-{{ fields.title.color|default('white') }}">{{ fields.title.label }}</h1>
+					{% endif %}
+					{% if fields.subtitle %}
+					<h2 class="font-oswald font-bold text-[41.67px] text-right uppercase text-{{ fields.subtitle.color|default('blue-light') }}">{{ fields.subtitle.label }}</h2>
+					{% endif %}
+					{% if fields.content %}
+					<div class="mt-4 font-oswald font-normal text-[20px] text-right text-white">
+						{{ fields.content|raw }}
+					</div>
+					{% endif %}
+				</div>
+			</div>
+			<div class="wrapper-cta flex flex-col items-start justify-start relative top-46 z-30">
+				<a href="{{ fields.cta_link.url }}">
+				<img src="{{ fields.cta_image.url }}" alt="{{ fields.cta_image.alt }}" title="{{ fields.cta_image.title }}" class="mx-auto"/>
+				</a>
+			</div>
+		</div>
+	</div>
+	{% if fields.bottom_border_image %}
+		<div class="absolute -bottom-10 z-10 w-full mb-8">
+			<img src="{{ fields.bottom_border_image.url }}" alt="{{ fields.bottom_border_image.alt }}" class="mx-auto"/>
+		</div>
+	{% endif %}
+</section>

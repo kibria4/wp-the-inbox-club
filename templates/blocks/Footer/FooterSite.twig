@@ -1,0 +1,84 @@
+{% import 'macro/el.twig' as el %}
+
+{# Determine alignment (Gutenberg passes this via block.align) #}
+{% set align = block.align ?? '' %}
+
+{# Base wrapper classes #}
+{% set wrapper_classes = [
+    className,
+    'text-center',
+    block.className,
+    'mx-auto'
+]|join(' ')|trim %}
+
+
+<footer class="site-footer relative pt-52" role="contentinfo">
+	<div class="container absolute z-50 top-8 left-1/2 -translate-x-1/2 w-full max-h-60 h-60  pointer-events-none" style="background: url({{ fields.footer_top_image_banner.url }}) no-repeat center / cover"></div>
+	<div class="container relative overflow-hidden" style="background: url({{ fields.footer_background_image.url }}) no-repeat center / cover">
+		{# Clapperboard img #}
+		{# Arrow bg #}
+		<div class="absolute inset-0 w-[125%] left-1/2 -translate-x-1/2 opacity-35 pointer-events-none" style="background: url({{ fields.footer_background_image_arrows.url }}) no-repeat center / cover"></div>
+		{# Heading #}
+		<div class="site-footer__heading w-[90%] mx-auto py-16 relative z-10">
+			{% if fields.footer_title %}
+				{{ el.heading({ 
+					field: fields.footer_title, 
+					block: block,
+					classes: 'mb-4 uppercase'
+				}) }}
+			{% endif %}
+		</div>
+
+		{# Links and Form #}
+		<div class="site-footer__links-form w-[90%] mx-auto pb-16 relative z-10">
+			<div class="grid grid-cols-2 gap-8 items-end justify-center">
+				<div class="links">
+					{% if fields.footer_links %}
+						<ul class="flex flex-col gap-12 pb-36">
+							{% for item in fields.footer_links %}
+								<li>
+									<a href="{{ item.link.url }}" class="text-white hover:underline font-normal uppercase flex flex-row gap-6">
+										<img src="{{ item.icon.url }}" alt="{{ item.icon.alt }}" class="w-6 h-6">
+										<span class="align-middle inline-block">
+											{{ item.link.title }}
+										</span>
+									</a>
+								</li>
+							{% endfor %}
+						</ul>
+					{% endif %}
+					{% if fields.footer_social_links %}
+						<ul class="flex flex-row gap-6">
+							{% for item in fields.footer_social_links %}
+								<li>
+									<a href="{{ item.link.url }}" class="text-white hover:underline font-normal uppercase flex flex-row gap-6">
+										<img src="{{ item.icon.url }}" alt="{{ item.icon.alt }}" class="w-14 h-14">
+									</a>
+								</li>
+							{% endfor %}
+						</ul>
+					{% endif %}
+				</div>
+
+				<div class="form bg-{{ fields.footer_form_bg_color|default('white') }} rounded-lg p-8">
+
+					{% if fields.footer_form_heading %}
+						{{ el.heading({ 
+							field: fields.footer_form_heading, 
+							block: block,
+							classes: 'mb-4 uppercase'
+						}) }}
+					{% endif %}
+
+					{% if fields.footer_form_content %}
+						<div class="form-shortcode">
+							{{ fields.footer_form_content|raw }}
+						</div>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		<div class="footer-bottom bg-{{ fields.footer_bottom_bar_bg_color|default('purple-dark') }} lg:h-36.5"></div>
+	</div>
+</footer>
+

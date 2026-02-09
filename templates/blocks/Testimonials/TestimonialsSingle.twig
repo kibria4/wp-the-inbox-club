@@ -1,0 +1,44 @@
+{% import 'macro/el.twig' as el %}
+{# Determine alignment (Gutenberg passes this via block.align) #}
+{% set align = block.align ?? '' %}
+
+{# Base wrapper classes #}
+{% set wrapper_classes = [
+    className,
+    block.className,
+    'text-center',
+	'relative'
+]|join(' ')|trim %}
+
+<section
+	class="{{ wrapper_classes }}">
+	{# Only wrap inner content in container when NOT full width #}
+	{% set inner_classes = [] %}
+	{% if align != 'full' %}
+		{% set inner_classes = inner_classes|merge(['container', 'mx-auto']) %}
+	{% endif %}
+
+	<div class="{{ inner_classes|join(' ') }} bg-{{ block.backgroundColor|default('transparent') }} text-{{ block.textColor|default('white')}}">
+		<div class="logos-content lg:w-[57.5%] mx-auto w-full py-12 px-4 flex flex-col items-center justify-center gap-6">
+      {% if fields.quote_image %}
+        <div class="wrapper-quote-image w-full mb-8 flex flex-col items-center justify-center mx-auto">
+          <img src="{{ fields.quote_image.url }}" alt="{{ fields.quote_image.alt }}" title="{{ fields.quote_image.title }}" class="w-auto h-16 object-contain"/>
+        </div>
+      {% endif %}
+      {% if fields.quote %}
+        {{ el.heading({ 
+            field: fields.quote, 
+            block: block,
+            colors: color,
+            classes: 'titles__main font-oswald uppercase text-[24px] font-bold leading-[66px]'
+             }) 
+        }}
+      {% endif %}
+      {% if fields.name %}
+        <div class="text-lg font-semibold text-white mb-2"><p class="font-oswald font-normal text-[30px] leading-snug">- {{ fields.name }}</p></div>
+      {% endif %}
+
+		</div>
+	</div>
+	
+</section>

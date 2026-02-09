@@ -1,0 +1,31 @@
+{% import 'macro/el.twig' as el %}
+
+{# Base wrapper classes #}
+{% set wrapper_classes = [
+    'section-hero-home',
+    'relative',
+    'w-full',
+    'bg-cover',
+    'bg-center',
+    'bg-no-repeat',
+    block.className,
+]|join(' ')|trim %}
+
+{% set img_background = fields.background_image.url ?? 'https://picsum.photos/1920/768' %}
+{% set img_alt = fields.background_image.alt ?? '' %}
+
+<section
+	class="{{ wrapper_classes }}" role="banner" aria-label="Hero section{% if fields.title.label %}: {{ fields.title.label|striptags }}{% endif %}">
+
+	{# Announce background image to screen readers as decorative #}
+	<div class="sr-only" aria-hidden="true">{{ img_alt }}</div>
+
+	<div class="container relative w-full h-full pt-12 pb-20{% if block.backgroundColor %} bg-{{ block.backgroundColor|default('dark') }}{% endif %}">
+		<img src="{{ fields.background_image.url }}" alt="{{ fields.background_image.alt }}" title="{{ fields.background_image.title }}" class="w-full h-auto object-cover relative" aria-hidden="true"/>
+	</div>
+	{% if fields.bottom_border_image %}
+		<div class="absolute -bottom-10 z-10 w-full mb-8">
+			<img src="{{ fields.bottom_border_image.url }}" alt="{{ fields.bottom_border_image.alt }}" class="mx-auto"/>
+		</div>
+	{% endif %}
+</section>

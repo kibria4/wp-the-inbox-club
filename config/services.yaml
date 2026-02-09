@@ -1,0 +1,35 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  Boogiewoogie\Theme\:
+    resource: '../src/*'
+    exclude: '../src/{Tests,Entity}'
+
+  Boogiewoogie\Theme\Console\:
+    resource: '../src/Console/*'
+    tags: ['console.command']
+    public: true
+
+  # 🔥 Make all blocks public & autowired
+  Boogiewoogie\Theme\Block\:
+    resource: '../src/Block/*'
+    public: true
+    autowire: true
+    autoconfigure: true
+
+  Boogiewoogie\Theme\Http\:
+    resource: '../src/Http/*'
+    public: true
+    tags: ['boogiewoogie.bootable']
+    # autowire: true
+    # autoconfigure: true
+
+  Boogiewoogie\Theme\Service\:
+    resource: '../src/Service/*'
+    public: true
+    autowire: true
+    autoconfigure: true
+    

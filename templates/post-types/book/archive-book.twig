@@ -1,0 +1,60 @@
+{# templates/post-types/book/archive-book.twig #}
+<section class="pt-12 pb-16">
+  <div class="container mx-auto">
+    <header class="mb-10 text-center">
+      <h1 class="text-3xl md:text-4xl font-bold">
+        {{ post_type_object.labels.name ?? 'Books' }}
+      </h1>
+      {% if term %}
+        <p class="mt-2 text-neutral-500 max-w-2xl mx-auto">
+          {{ term.description }}
+        </p>
+      {% endif %}
+    </header>
+
+    {% if posts|length %}
+      <div class="grid gap-8 md:grid-cols-3">
+        {% for post in posts %}
+          <article class="border border-neutral-200 rounded-lg overflow-hidden hover:shadow-md transition">
+            <a href="{{ post.link }}" class="block h-full">
+              {% if post.thumbnail %}
+                <div class="aspect-[4/3] overflow-hidden">
+                  <img
+                    src="{{ post.thumbnail.src }}"
+                    alt="{{ post.thumbnail.alt }}"
+                    class="w-full h-full object-cover"
+                  />
+                </div>
+              {% endif %}
+
+              <div class="p-6">
+                <h2 class="text-xl font-semibold mb-2">
+                  {{ post.title }}
+                </h2>
+
+                <p class="text-xs uppercase tracking-wide text-neutral-500 mb-3">
+                  {{ post.date('j M Y') }}
+                </p>
+
+                {% if post.preview.read_more %}
+                  <p class="text-sm text-neutral-700 mb-3">
+                    {{ post.preview.read_more }}
+                  </p>
+                {% endif %}
+
+                <span class="inline-flex items-center text-sm font-medium">
+                  Read more
+                  <span aria-hidden="true" class="ml-1">→</span>
+                </span>
+              </div>
+            </a>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-center text-neutral-600">
+        No {{ post_type_object.labels.name|lower ?? 'Books'|lower }} found.
+      </p>
+    {% endif %}
+  </div>
+</section>

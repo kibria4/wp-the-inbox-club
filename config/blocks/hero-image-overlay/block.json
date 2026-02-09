@@ -1,0 +1,55 @@
+{
+    "apiVersion": 3,
+    "name": "acf/hero-image-overlay",
+    "title": "HeroImageOverlay",
+    "description": "HeroImageOverlay block.",
+    "category": "theme-blocks",
+    "icon": "cover-image",
+    "keywords": [
+        "hero-image-overlay",
+        "block"
+    ],
+    "supports": {
+        "align": true,
+        "customClassName": true,
+        "jsx": true,
+        "multiple": true,
+        "inserter": true,
+        "alignWide": true,
+        "anchor": true,
+        "html": false,
+        "background": {
+            "backgroundImage": true,
+            "backgroundSize": true
+        },
+        "color": {
+            "background": true,
+            "text": true,
+            "link": true,
+            "heading": true,
+            "gradients": true,
+            "button": true,
+            "enableContrastChecker": true
+        },
+        "spacing": {
+            "padding": true,
+            "margin": true,
+            "blockGap": true
+        },
+        "typography": {
+            "fontSize": true,
+            "lineHeight": true,
+            "letterSpacing": true,
+            "textTransform": true,
+            "fontWeight": true,
+            "fontStyle": true
+        }
+    },
+    "acf": {
+        "blockVersion": 3,
+        "mode": "preview",
+        "renderCallback": "\\Boogiewoogie\\Theme\\Block\\Hero\\HeroImageOverlay::renderCallback"
+    },
+    "style": "file:../../../dist/blocks/hero-image-overlay/hero-image-overlay.css",
+    "editorScript": "file:../../../dist/blocks/hero-image-overlay/hero-image-overlay.js"
+}

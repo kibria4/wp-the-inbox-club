@@ -1,0 +1,294 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Oswald";
+  src: url("../fonts/Oswald-VariableFont_wght.ttf") format("truetype-variations");
+  font-weight: 200 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Montserrat";
+  src: url("../fonts/Montserrat-VariableFont_wght.ttf") format("truetype-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Montserrat";
+  src: url("../fonts/Montserrat-Italic-VariableFont_wght.ttf") format("truetype-variations");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("../fonts/Inter-VariableFont_opsz,wght.ttf") format("truetype-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/**
+ * Design tokens via Tailwind v4 @theme
+ * (These will later be kept in sync with theme.json in the FSE chapter)
+ */
+@theme {
+  --text-base: 16px;
+
+  --font-sans: "Oswald", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  --font-oswald: "Oswald", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  --font-montserrat: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  --font-inter: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+
+  /* Brand colours – synced into theme.json */
+  --color-purple-dark: #290051;
+  --color-purple: #8A2BE1;
+  --color-purple-light: #968CFF;
+  --color-blue-dark: #00003A;
+  --color-blue-mid: #675DD1;
+  --color-blue-light: #3CB9FC;
+  --color-pink: #B537F2;
+
+  --color-dark: #030303;
+  --color-black: #000000;
+  --color-gray: #C6C6C6;
+  --color-white: #FFFEFE;
+  --color-transparent: transparent;
+
+  --color-body-bg: var(--color-white);
+  --color-body-text: var(--color-black);
+
+  --wrapper-quote-image: url('../img/quotes.svg');
+}
+
+@layer base {
+  body {
+    @apply text-base text-black font-sans;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-oswald) !important;
+  }
+}
+
+@layer utilities {
+  a:where(:not(.wp-element-button)) {
+    text-decoration: none !important;
+  }
+  :where(.wp-site-blocks) > * {
+    margin-top: 0 !important;
+  }
+  .container {
+    @apply mx-auto;
+
+    @media (width >= 90rem) {
+      max-width: 90rem;
+    }
+    @media (width >= 96rem) {
+      max-width: 90rem;
+    }
+    @media (max-width: 89.9999rem) {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+
+  .h1 {
+    @apply font-oswald text-[160px] leading-none font-bold;
+  }
+
+  .h2 {
+    @apply font-oswald text-[130px] leading-29.5 font-bold;
+
+  }
+
+  .h3 {
+    @apply font-oswald text-[64px] leading-normal font-bold;
+  }
+
+  .h4 {
+    @apply font-oswald leading-normal font-bold text-[30px];
+  }
+
+  .h5 {
+    @apply font-oswald text-[23px] leading-relaxed font-bold;
+  }
+
+  .p {
+    @apply font-montserrat text-base leading-normal font-normal
+  }
+
+  header nav a {
+    @apply font-oswald font-normal text-[20px] leading-[27.8px] uppercase;
+  }
+
+  .footer *,
+  .footer ul li,
+  .footer ul li a {
+    color: var(--color-sand) !important;
+  }
+
+  /* Smooth drawer transition */
+  #mobile-menu-drawer {
+    transition: transform 500ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Ensure backdrop animates smoothly */
+  #mobile-menu-drawer-backdrop {
+    transition: opacity 500ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+@layer components {
+  .entry-content section {
+    margin-block: 0;
+  }
+
+  .text-gray {
+    color: #999999 !important;
+  }
+
+  /* Acceptance checkbox layout */
+  .gdpr-acceptance .wpcf7-list-item {
+    margin: 0;
+  }
+  .gdpr-acceptance label {
+    display: inline-flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+  }
+  .gdpr-acceptance input[type="checkbox"] {
+    width: 1.1rem;
+    height: 1.1rem;
+    margin-top: 0.2rem;
+    accent-color: #7c3aed; /* purple-ish */
+  }
+
+  /* CF7 validation styles */
+  .wpcf7-not-valid {
+    border-color: #dc2626 !important;
+  }
+  .wpcf7-not-valid-tip {
+    margin-top: 0.35rem;
+    font-size: 0.875rem;
+    color: #dc2626;
+  }
+  .wpcf7-response-output {
+    margin: 1rem 0 0;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+  }
+
+  /* Acceptance checkbox layout */
+  .gdpr-acceptance .wpcf7-list-item {
+    margin: 0;
+  }
+  .gdpr-acceptance label {
+    display: inline-flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+  }
+  .gdpr-acceptance input[type="checkbox"] {
+    width: 1.1rem;
+    height: 1.1rem;
+    margin-top: 0.2rem;
+    accent-color: #6b3a43; /* rosewood */
+  }
+
+  /* CF7 validation styles */
+  .wpcf7-not-valid {
+    border-color: #dc2626 !important;
+  }
+  .wpcf7-not-valid-tip {
+    margin-top: 0.35rem;
+    font-size: 0.875rem;
+    color: #dc2626;
+  }
+  .wpcf7-response-output {
+    margin: 1rem 0 0;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+  }
+
+  .wpcf7-acceptance input[type="checkbox"] {
+    accent-color: #6b3a43;
+  }
+
+  .wpcf7-not-valid {
+    border: 0 !important;
+    border-bottom: 2px solid #6b3a43 !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  .wpcf7-form-control.wpcf7-acceptance {
+    text-align: left !important;
+  }
+
+  .wrapper-quote::before {
+    content:"";
+    position: absolute;
+    top: 25%;
+    right: 5%;
+    width: 76px;
+    height: 84px;
+    background: var(--wrapper-quote-image) no-repeat center right / 100%;
+    opacity: 0.5;
+  }
+
+  
+}
+
+/* Block editor - mirror styling */
+/* -------------------------------------------
+   Block editor visual parity helpers
+   ---------------------------------------- */
+
+/* Make editor canvas use our global background, text & font */
+.editor-styles-wrapper {
+  background-color: var(--color-body-bg);
+  color: var(--color-body-text);
+  font-family: var(--font-sans);
+}
+
+/* Ensure .container behaves consistently in the editor */
+.editor-styles-wrapper .container {
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+/* Optional: tighter editor canvas padding (purely visual) */
+.editor-styles-wrapper > .wp-block-post-content {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+/* Wide alignment: centre and use the "wide" layout width */
+.wp-site-blocks .alignwide,
+.editor-styles-wrapper .alignwide {
+  max-width: 1080px; /* match settings.layout.wideSize */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Full alignment: stretch to full viewport width */
+.wp-site-blocks .alignfull,
+.editor-styles-wrapper .alignfull {
+  width: 100vw;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}

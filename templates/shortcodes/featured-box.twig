@@ -1,0 +1,12 @@
+{# templates/shortcodes/featured-box.twig #}
+<div class="shortcode-featured-box {{ atts.class }}">
+  {% if atts.title %}
+    <h3>{{ atts.title }}</h3>
+  {% endif %}
+
+  {% if content %}
+    <div class="shortcode-featured-box__content">
+      {{ content|raw }}
+    </div>
+  {% endif %}
+</div>

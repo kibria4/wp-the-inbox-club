@@ -1,0 +1,46 @@
+# General
+*.log
+*.sql
+*.sqlite
+.DS_Store
+Thumbs.db
+
+# Node modules and logs
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# Composer dependencies
+/vendor/
+composer.lock
+
+# Compiled static assets
+/compiled/
+/dist/
+
+# Security and environment files
+# .env
+.env.local
+.env.production
+.env.staging
+
+# Editor settings
+.vscode/
+.idea/
+
+# Cache and temporary files
+.cache/
+tmp/
+
+# User-specific files
+.sftp-config.json
+
+# Exclude specific configuration files that might be present in your theme or during development
+config.codekit
+config.codekit3
+*.sublime-workspace
+*.sublime-project
+webpack-dev-port.json
+theme.json
+error_log

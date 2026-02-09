@@ -1,0 +1,54 @@
+{% import 'macro/el.twig' as el %}
+{# Determine alignment (Gutenberg passes this via block.align) #}
+{% set align = block.align ?? '' %}
+
+{# Base wrapper classes #}
+{% set wrapper_classes = [
+    className,
+    'py-12',
+    block.className,
+    'text-center',
+    'bg-' ~ (block.backgroundColor|default('transparent')),
+    'text-' ~ (block.textColor|default('black')),
+]|join(' ')|trim %}
+
+<section class="{{ wrapper_classes }}">
+  {# Only wrap inner content in container when NOT full width #}
+  {% set inner_classes = [] %}
+  {% if align != 'full' %}
+    {% set inner_classes = inner_classes|merge(['container', 'mx-auto']) %}
+  {% endif %}
+
+  <div class="{{ inner_classes|join(' ') }}">
+    {% if fields.image %}
+      <div class="mt-8">
+        <img src="{{ fields.image.url }}" alt="{{ fields.image.alt }}" class="mx-auto" />
+      </div>
+    {% endif %}
+
+    {% if fields.title %}
+        {{ el.heading({ 
+            field: fields.title, 
+            block: block,
+            colors: color,
+            classes: 'titles__main text-6xl font-bold' }) 
+        }}
+    {% endif %}
+
+    {% if fields.content %}
+      <div class="leading-relaxed text-2xl text-black">
+        {{ fields.content|raw }}
+      </div>
+    {% endif %}
+
+    {% if fields.buttons %}
+        {% include 'partials/buttons.twig' %}
+    {% endif %}
+    
+    {% if fields.cta_link %}
+      <a href="{{ fields.cta_link.url }}" class="btn btn-primary">
+        {{ fields.cta_link.title }}
+      </a>
+    {% endif %}
+  </div>
+</section>

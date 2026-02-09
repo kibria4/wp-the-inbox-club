@@ -1,0 +1,22 @@
+{% set field = args.field ?? '' %}
+{% set acf_block = args.block ?? '' %}
+{% set block_colors = args.colors ?? '' %}
+{% set fieldName = args.fieldName ?? '' %}
+{% set classes = args.classes ?? '' %}
+{% set attributes = args.attributes ?? '' %}
+{% set color = field.color ?? 'grey-200' %}
+{% set bg_color = field.bg_color ?? 'transparent' %}
+{% set style = args.removeHeadingClass ? '' : (field.style ?? field[fieldName ~ '_level']) %}
+{% set level =  field.level ?? 'h2' %}
+{% set label = field.label ?? 'Heading goes here' %}
+
+{# check if block_colors.h1TexttextColor, h1BackgroundColor, h2TextColor, h2BackgroundColor, h3TextColor, h3BackgroundColor, h4TextColor, h4BackgroundColor, h5TextColor, h5BackgroundColor, h6TextColor, h6BackgroundColour exist based on the level variable, if it doesn't exist, check if headingBackgroundColor and headingTextColor exist, if not, fallback to color and bg_color variables #}
+{% set color = block_colors[level ~ 'TextColor'] ?? block_colors['headingTextColor'] ?? color %}
+{% set bg_color = block_colors[level ~ 'BackgroundColor'] ?? block_colors['headingBackgroundColor'] ?? bg_color %}
+{% set class_list = 'text-' ~ color ~ ' bg-' ~ bg_color ~ ' ' ~ style ~ ' ' ~ classes %}
+
+{% if field.sr_only %}
+    <span class="sr-only">{{ label }}</span>
+{% elseif label %}
+    <{{ level }} class="{{ class_list|trim }}"{% if attributes %} {{ attributes }}{% endif %}>{{ label }}</{{ level }}>
+{% endif %}

@@ -1,0 +1,40 @@
+{% import 'macro/el.twig' as el %}
+{# Determine alignment (Gutenberg passes this via block.align) #}
+{% set align = block.align ?? '' %}
+
+{# Base wrapper classes #}
+{% set wrapper_classes = [
+    className,
+    block.className,
+    fields.margin_bottom_reduction|default('mb-0'),
+    'bg-' ~ (block.backgroundColor|default('transparent')),
+    'text-' ~ (block.textColor|default('black'))
+]|join(' ')|trim %}
+
+<section
+	class="{{ wrapper_classes }}">{# Only wrap inner content in container when NOT full width #}
+	{% set inner_classes = [] %}
+	{% if align != 'full' %}
+		{% set inner_classes = inner_classes|merge(['container', 'mx-auto']) %}
+	{% endif %}
+
+	<div class="{{ inner_classes|join(' ') }}">
+		<div class="lg:w-[90%] mx-auto w-full">
+
+			{% if fields.title %}
+				{{ el.heading({ 
+            field: fields.title, 
+            block: block,
+            colors: color,
+            classes: 'titles__main uppercase my-8' }) 
+        }}
+			{% endif %}
+
+			{% if fields.cta_link %}
+				<a href="{{ fields.cta_link.url }}" class="btn btn-primary">
+					<img src="{{ fields.cta_image.url }}" alt="{{ fields.cta_image.alt }}" title="{{ fields.cta_image.title }}" class="w-fit h-auto">
+				</a>
+			{% endif %}
+		</div>
+	</div>
+</section>

@@ -1,0 +1,147 @@
+#!/usr/bin/env php
+<?php
+
+use Boogiewoogie\Core\Service\ContainerFactory;
+use Symfony\Component\Console\Application;
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+$themeDir = realpath(__DIR__ . '/..');
+
+// Build container: core + theme config + boogiewoogie-* recipes
+$container = ContainerFactory::create(
+    [$themeDir . '/config'], // extraConfigDirs
+    $themeDir                // projectRoot => sets boogiewoogie.theme_dir
+);
+
+$container->compile();
+
+$app = new Application('Boogiewoogie Tools', '1.0.0');
+
+foreach ($container->findTaggedServiceIds('console.command') as $id => $tags) {
+    $app->add($container->get($id));
+}
+
+$app->run();
+// use Symfony\Component\Console\Application;
+// use Boogiewoogie\Core\Service\ContainerFactory;
+// use Symfony\Component\Config\FileLocator;
+// use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+
+// require_once __DIR__ . '/../vendor/autoload.php';
+
+// // Theme root = one level up from /bin
+// $themeDir = realpath(__DIR__ . '/..');
+
+// $appName    = 'Boogiewoogie Tools';
+// $appVersion = '1.0.0';
+
+// // 1) Build container exactly like the theme bootstrap does:
+// $container = ContainerFactory::create([
+//     'boogiewoogie.theme_dir' => $themeDir,
+// ]);
+
+// // Load theme services
+// $themeConfigLocator = new FileLocator($themeDir . '/config');
+// $themeLoader        = new YamlFileLoader($container, $themeConfigLocator);
+// $themeLoader->load('services.yaml');
+
+// $container->compile();
+
+// // 2) Create console app
+// $application = new Application($appName, $appVersion);
+
+// // 3) Auto-register every service tagged as console.command
+// foreach ($container->findTaggedServiceIds('console.command') as $id => $tags) {
+//     $command = $container->get($id);
+//     $application->add($command);
+// }
+
+// $application->run();
+
+// use Symfony\Component\Console\Application;
+// use Boogiewoogie\Core\Service\ContainerFactory;
+// use Symfony\Component\Config\FileLocator;
+// use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+
+// require_once __DIR__ . '/../vendor/autoload.php';
+
+// $themeDir = realpath(__DIR__ . '/..');
+
+// // 1) Build container: core + ALL packages (via ContainerFactory)
+// $container = ContainerFactory::create();
+
+// // 2) Load theme services
+// $themeConfigLocator = new FileLocator($themeDir . '/config');
+// $themeLoader        = new YamlFileLoader($container, $themeConfigLocator);
+// $themeLoader->load('services.yaml');
+
+// // 3) Compile container
+// $container->compile();
+
+// // 4) Create console app
+// $app = new Application('Boogiewoogie Tools', '1.0.0');
+
+// // 5) Auto-register all services tagged as console.command
+// if (method_exists($container, 'findTaggedServiceIds')) {
+//     foreach ($container->findTaggedServiceIds('console.command') as $id => $tags) {
+//         $command = $container->get($id);
+//         $app->add($command);
+//     }
+// }
+
+// // 6) Run
+// $app->run();
+
+// use Symfony\Component\Console\Application;
+// use Boogiewoogie\Core\Service\ContainerFactory;
+// use Symfony\Component\Config\FileLocator;
+// use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+
+// require_once __DIR__ . '/../vendor/autoload.php';
+
+// $themeDir = realpath(__DIR__ . '/..');
+
+// // 1) Build container same as Bootstrap does
+// $container = ContainerFactory::create();
+
+// // Load theme services
+// $themeConfigLocator = new FileLocator($themeDir . '/config');
+// $themeLoader        = new YamlFileLoader($container, $themeConfigLocator);
+// $themeLoader->load('services.yaml');
+
+// $container->compile();
+
+// // 2) Create console app
+// $app = new Application('Boogiewoogie Tools', '1.0.0');
+
+// // 3) Auto-register all console.command services
+// foreach ($container->findTaggedServiceIds('console.command') as $id => $tags) {
+//     $app->add($container->get($id));
+// }
+
+// $app->run();
+
+// use Symfony\Component\Console\Application;
+// use Boogiewoogie\Core\Console\MakeBlockSymfonyCommand;
+// use Boogiewoogie\Core\Console\GdprScanCptsSymfonyCommand;
+// use Boogiewoogie\Core\Console\MakePostTypeSymfonyCommand;
+// use Boogiewoogie\Core\Console\MakeTaxonomySymfonyCommand;
+// use Boogiewoogie\Core\Console\MakeShortcodeSymfonyCommand;
+// use Boogiewoogie\Theme\Console\ClearPageCacheCommand;
+
+// require_once __DIR__ . '/../vendor/autoload.php';
+
+// // Theme root = one level up from /bin
+// $themeDir = realpath(__DIR__ . '/..');
+
+// $app = new Application('Boogiewoogie Tools', '1.0.0');
+
+// // Register commands from core, passing the theme path
+// $app->add(new MakeBlockSymfonyCommand($themeDir));
+// $app->add(new MakePostTypeSymfonyCommand($themeDir));
+// $app->add(new MakeTaxonomySymfonyCommand($themeDir));
+// $app->add(new MakeShortcodeSymfonyCommand($themeDir));
+// $app->add(new GdprScanCptsSymfonyCommand($themeDir));
+
+// $app->run();

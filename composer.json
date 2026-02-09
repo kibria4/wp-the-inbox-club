@@ -1,0 +1,75 @@
+{
+    "name": "boogiewoogie/theme",
+    "description": "Bespoke WordPress block theme, built by Kibria Ali.",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Boogiewoogie\\Theme\\": "src/",
+            "Boogiewoogie\\Core\\": "packages/boogiewoogie-core/src/"
+        }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../packages/boogiewoogie-core",
+            "options": {
+                "symlink": true
+            }
+        },
+        {
+            "type": "path",
+            "url": "../../packages/boogiewoogie-cache",
+            "options": {
+                "symlink": true
+            }
+        },
+        {
+            "type": "path",
+            "url": "../../packages/boogiewoogie-httpclient",
+            "options": {
+                "symlink": true
+            }
+        },
+        {
+            "type": "path",
+            "url": "../../packages/boogiewoogie-serializer",
+            "options": {
+                "symlink": true
+            }
+        },
+        {
+            "type": "path",
+            "url": "../../packages/boogiewoogie-seo",
+            "options": {
+                "symlink": true
+            }
+        },
+        {
+            "type": "path",
+            "url": "../../packages/boogiewoogie-performance",
+            "options": {
+                "symlink": true
+            }
+        }
+    ],
+    "authors": [
+        {
+            "name": "Ghulam Kibria Ali",
+            "email": "kibria4@live.co.uk"
+        }
+    ],
+    "require": {
+        "boogiewoogie/core": "1.0.0",
+        "boogiewoogie/cache": "^1.0",
+        "boogiewoogie/httpclient": "1.0.0",
+        "boogiewoogie/performance": "^1.0",
+        "boogiewoogie/serializer": "1.0.0",
+        "boogiewoogie/seo": "1.0.0",
+        "symfony/mailer": "^7.3",
+        "vinkla/extended-acf": "^14.6",
+        "timber/timber": "^2.3",
+        "symfony/console": "^7.3",
+        "vlucas/phpdotenv": "^5.6",
+        "symfony/cache": "^7.3"
+    }
+}

@@ -1,0 +1,80 @@
+{% import 'macro/el.twig' as el %}
+{# Determine alignment (Gutenberg passes this via block.align) #}
+{% set align = block.align ?? '' %}
+
+{# Base wrapper classes #}
+{% set wrapper_classes = [
+    className,
+    'pt-12',
+    block.className,
+    'bg-' ~ (block.backgroundColor|default('transparent')),
+    'text-' ~ (block.textColor|default('black'))
+]|join(' ')|trim %}
+
+<style>
+  .accordion-faqs__item[open] .accordion-faqs__arrow {
+    transform: rotate(90deg);
+  }
+  .accordion-faqs__item[open] .accordion-faqs__question {
+    /* Update aria-expanded via JavaScript if needed for screen readers */
+  }
+</style>
+
+<section
+	class="{{ wrapper_classes }}">{# Only wrap inner content in container when NOT full width #}
+	{% set inner_classes = [] %}
+	{% if align != 'full' %}
+		{% set inner_classes = inner_classes|merge(['container', 'mx-auto']) %}
+	{% endif %}
+
+	<div class="{{ inner_classes|join(' ') }}">
+		<div class="lg:w-[90%] mx-auto w-full">
+
+			{% if fields.title %}
+				{{ el.heading({ 
+            field: fields.title, 
+            block: block,
+            colors: color,
+            classes: 'titles__main text-6xl font-bold uppercase' }) 
+        }}
+			{% endif %}
+			
+      
+      {% if fields.faqs %}
+      <div class="accordion-faqs pt-12" itemscope itemtype="https://schema.org/FAQPage">
+        <div class="accordion-faqs__list flex flex-col gap-8">
+          {% for faq in fields.faqs %}
+            <details class="accordion-faqs__item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+              <summary class="accordion-faqs__question flex flex-row items-center justify-between bg-{{ fields.question_bg_color|default('blue-light') }} rounded-lg p-4 cursor-pointer list-none" aria-expanded="false">
+                <span class="w-[90%] text-white h5" itemprop="name">{{ faq.question }}</span>
+                {% if fields.question_arrow_image %}
+                  <img src="{{ fields.question_arrow_image.url }}" alt="" class="accordion-faqs__arrow w-[43px] h-[42px] opacity-50 transition-transform duration-250" aria-hidden="true">
+                {% endif %}
+              </summary>
+              <div class="accordion-faqs__answer py-8 text-black font-normal text-[20px]" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                <div class="px-4" itemprop="text">{{ faq.answer|raw }}</div>
+              </div>
+            </details>
+          {% endfor %}
+        </div>
+      </div>
+			{% endif %}
+
+      {% if fields.summary_title %}
+				{{ el.heading({ 
+            field: fields.summary_title, 
+            block: block,
+            colors: color,
+            classes: 'titles__summary uppercase my-8' }) 
+        }}
+			{% endif %}
+
+			{% if fields.summary_cta_link %}
+				<a href="{{ fields.summary_cta_link.url }}" class="btn btn-primary">
+					<img src="{{ fields.summary_cta_image.url }}" alt="{{ fields.summary_cta_image.alt }}" title="{{ fields.summary_cta_image.title }}" class="w-fit h-auto">
+          
+				</a>
+			{% endif %}
+		</div>
+	</div>
+</section>

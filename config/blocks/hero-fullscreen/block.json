@@ -1,0 +1,55 @@
+{
+    "apiVersion": 3,
+    "name": "acf/hero-fullscreen",
+    "title": "HeroFullscreen",
+    "description": "HeroFullscreen block.",
+    "category": "theme-blocks",
+    "icon": "cover-image",
+    "keywords": [
+        "hero-fullscreen",
+        "block"
+    ],
+    "supports": {
+        "align": true,
+        "customClassName": true,
+        "jsx": true,
+        "multiple": true,
+        "inserter": true,
+        "alignWide": true,
+        "anchor": true,
+        "html": false,
+        "background": {
+            "backgroundImage": true,
+            "backgroundSize": true
+        },
+        "color": {
+            "background": true,
+            "text": true,
+            "link": true,
+            "heading": true,
+            "gradients": true,
+            "button": true,
+            "enableContrastChecker": true
+        },
+        "spacing": {
+            "padding": true,
+            "margin": true,
+            "blockGap": true
+        },
+        "typography": {
+            "fontSize": true,
+            "lineHeight": true,
+            "letterSpacing": true,
+            "textTransform": true,
+            "fontWeight": true,
+            "fontStyle": true
+        }
+    },
+    "acf": {
+        "blockVersion": 3,
+        "mode": "preview",
+        "renderCallback": "\\Boogiewoogie\\Theme\\Block\\Hero\\HeroFullscreen::renderCallback"
+    },
+    "style": "file:../../../dist/blocks/hero-fullscreen/hero-fullscreen.css",
+    "editorScript": "file:../../../dist/blocks/hero-fullscreen/hero-fullscreen.js"
+}

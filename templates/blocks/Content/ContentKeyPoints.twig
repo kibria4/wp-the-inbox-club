@@ -1,0 +1,72 @@
+{% import 'macro/el.twig' as el %}
+{# Determine alignment (Gutenberg passes this via block.align) #}
+{% set align = block.align ?? '' %}
+
+{# Base wrapper classes #}
+{% set wrapper_classes = [
+    className,
+    block.className,
+]|join(' ')|trim %}
+
+<section
+	class="{{ wrapper_classes }}">
+	{# Only wrap inner content in container when NOT full width #}
+	{% set inner_classes = [] %}
+	{% if align != 'full' %}
+		{% set inner_classes = inner_classes|merge(['container', 'mx-auto']) %}
+	{% endif %}
+
+	<div class="{{ inner_classes|join(' ') }} bg-{{ block.backgroundColor|default('transparent') }} text-{{ block.textColor|default('black')}}">
+
+		<div class="content-keypoints lg:w-[90%] mx-auto w-full py-12">
+			{% if fields.title %}
+				{{ el.heading({ 
+            field: fields.title, 
+            block: block,
+            colors: color,
+            classes: 'titles__main pt-16 pb-8' }) 
+        }}
+			{% endif %}
+
+      <div class="wrapper-keypoints">
+        {% if fields.points %}
+          <div class="grid grid-cols-1 lg:grid-cols-10 gap-4 w-full mt-20">
+            {% for point in fields.points %}
+              {# Map width classes to grid column spans (10-column grid) #}
+              {% set width_class = point.width_desktop|default('lg:w-full') %}
+              {% set col_span = 'lg:col-span-10' %} {# default: full width #}
+              {% if width_class == 'lg:w-1/5' %}
+                {% set col_span = 'lg:col-span-2' %}
+              {% elseif width_class == 'lg:w-2/5' %}
+                {% set col_span = 'lg:col-span-4' %}
+              {% elseif width_class == 'lg:w-1/2' %}
+                {% set col_span = 'lg:col-span-5' %}
+              {% endif %}
+              
+              <div class="keypoint flex flex-col gap-2 items-center justify-center bg-{{ point.background_color|default('blue-light') }} p-4 rounded-4xl {{ col_span }} text-center">
+                <h4 class="font-oswald font-bold text-[31.13px] leading-[3rem] text-center uppercase text-{{ point.text_color|default('blue-dark') }}">{{ point.top_text }}</h4>
+                <h4 class="font-oswald font-bold text-[49.15px] leading-[3rem] text-center uppercase text-{{ point.text_color|default('blue-dark') }}">{{ point.main_text }}</h4>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+		</div>
+
+		{% if fields.content %}
+			<div class="leading-relaxed text-2xl text-black">
+				{{ fields.content|raw }}
+			</div>
+		{% endif %}
+
+		{% if fields.buttons %}
+			{% include 'partials/buttons.twig' %}
+		{% endif %}
+
+		{% if fields.cta_link %}
+			<a href="{{ fields.cta_link.url }}" class="btn btn-primary">
+				{{ fields.cta_link.title }}
+			</a>
+		{% endif %}
+	</div>
+</section>

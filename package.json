@@ -1,0 +1,30 @@
+{
+  "name": "boogiewoogie-theme",
+  "version": "1.0.0",
+  "description": "JS packages for Boogie Woogie theme.",
+  "main": "index.js",
+  "scripts": {
+    "sync-theme": "node scripts/sync-theme-json.mjs",
+    "dev": "npm run sync-theme && vite",
+    "build": "npm run sync-theme && vite build",
+    "build-watch": "npm run sync-theme && vite build --watch --mode development"
+  },
+  "keywords": [],
+  "author": "Kibria Ali",
+  "license": "",
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.18",
+    "tailwindcss": "^4.1.18",
+    "vite": "^7.3.1",
+    "vite-plugin-full-reload": "^1.2.0"
+  },
+  "dependencies": {
+    "@barba/core": "^2.10.3",
+    "dotenv": "^17.2.3",
+    "dotenv-expand": "^12.0.3",
+    "flowbite": "^4.0.1",
+    "gsap": "^3.14.2",
+    "htmx.org": "^2.0.8",
+    "swiper": "^12.1.0"
+  }
+}

@@ -1,0 +1,69 @@
+{% import 'macro/el.twig' as el %}
+{# Determine alignment (Gutenberg passes this via block.align) #}
+{% set align = block.align ?? '' %}
+
+
+<section 
+    class="section-hero-standard mb-6 lg:mb-0 bg-rosewood text-sand"
+    role="banner"
+    aria-label="Hero section{% if fields.title.label %}: {{ fields.title.label|striptags }}{% endif %}">
+    <div class="container">
+        <div class="flex flex-col lg:flex-row items-center justify-center h-full relative mb-24">
+            <div
+                class="wrapper-text lg:relative text-center lg:pr-8 lg:text-left grid grid-cols-1 grid-rows-2 p-6 lg:p-0 gap-y-4 lg:w-1/2 h-full order-2 lg:order-1 justify-center items-center">
+                <div
+                    class="wrapper-intro col-span-2 row-span-2 order-1 lg:order-2 mt-8 lg:mt-0 h-fit mx-auto lg:mx-0 max-w-[75%] lg:max-w-none lg:py-12 xl:py-0 lg:pl-12 xl:pl-0">
+                    <!-- Post Categories -->
+                    <style>
+                        .no-underline a {
+                            pointer-events: none;
+                            /* Disable click */
+                            text-decoration: none;
+                            color: inherit;
+                        }
+
+                        .no-underline a:hover {
+                            text-decoration: none;
+                            color: inherit;
+                        }
+                        figure img {
+                            max-height: 350px !important;
+                            object-fit: contain !important;
+                        }
+                    </style>
+                    {% if fields.small_title %}
+                        {{ el.heading({ 
+                            field: fields.small_title, 
+                            block: block,
+                            colors: color,
+                            classes: 'titles__smalltitle' }) 
+                        }}
+                    {% endif %}
+                    {% if fields.title %}
+                        {{ el.heading({ 
+                            field: fields.title, 
+                            block: block,
+                            colors: color,
+                            classes: 'titles__main' }) 
+                        }}
+                    {% endif %}
+                    {% if fields.subtitle %}
+                        {{ el.heading({ 
+                            field: fields.subtitle, 
+                            block: block,
+                            colors: color,
+                            classes: 'titles__subtitle' }) 
+                        }}
+                    {% endif %}
+                </div>
+            </div>
+            <figure class="wrapper-img w-full lg:w-1/2 h-full order-1 lg:order-2 max-h-87.5 object-contain">
+                <img 
+                    src="{{ fields.background_image.url }}" 
+                    alt="{{ fields.background_image.alt ?? '' }}" 
+                    class="w-full max-h-87.5 object-contain blog-post"
+                    loading="lazy" />
+            </figure>
+        </div>
+    </div>
+</section>

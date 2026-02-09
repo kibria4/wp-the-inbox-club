@@ -1,0 +1,54 @@
+{% import 'macro/el.twig' as el %}
+
+{# filepath: /Users/kibriaali/LocalSites/alice-molloy-interiors-2026/app/public/wp-content/themes/alicemolloyinteriors/templates/blocks/Header/HeaderSite.twig #}
+
+{# Base wrapper classes #}
+{% set wrapper_classes = [
+    className,
+    header_position,
+    'top-0 left-0 right-0 z-50 w-full',
+    block.className,
+]|join(' ')|trim %}
+
+	<header class="site-header {{ wrapper_classes }}{% if has_hero_home == false %} bg-rosewood{% endif %}" id="{{ fields.block_id|default('block-' ~ random()) }}" role="banner"> <div
+		class="container">
+		{# Desktop banner #}
+		<section class="site-header__banner bg-{{ fields.header_bg_desktop|default('transparent')}} py-4">
+			<div class="flex flex-row gap-8 items-center justify-center w-[90%] mx-auto">
+				{% if fields.header_desktop_banner_title %}
+					{{ el.heading({ 
+                    field: fields.header_desktop_banner_title, 
+                    block: block,
+                    classes: ''
+                }) }}
+				{% endif %}
+				{% if fields.header_signup_image and fields.header_signup_link %}
+					<a href="{{ fields.header_signup_link.url }}" class="w-fit">
+						<img src="{{ fields.header_signup_image.url }}" alt="{{ fields.header_signup_image.alt|default('Sign Me Up') }}" class="w-auto h-auto">
+					</a>
+				{% endif %}
+			</div>
+		</section>
+		<section class="site-header__main w-[90%] mx-auto">
+			<div class="flex flex-row gap-8 justify-between items-center py-4">
+				<div class="site-header__logo">
+					<a href="{{ site_url }}">
+						<img src="{{ fields.header_logo_desktop.url }}" alt="{{ fields.header_logo_desktop.alt|default('The Inbox Club - Logo') }}" title="{{ fields.header_logo_desktop.title|default('The Inbox Club') }}" class="w-auto">
+					</a>
+				</div>
+
+				<nav class="site-header__nav">
+					{% if fields.header_links %}
+						<ul class="flex flex-row gap-6">
+							{% for item in fields.header_links %}
+								<li>
+									<a href="{{ item.link.url }}" class="relative pb-[11px] text-black font-medium uppercase after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[7px] after:bg-pink after:rounded after:transition-all after:duration-250 {% if item.link.url == request.link or item.link.url == '/' ~ request.link %}after:opacity-100 after:translate-y-0{% else %}after:opacity-0 after:translate-y-2 hover:after:opacity-100 hover:after:translate-y-0{% endif %}">{{ item.link.title }}</a>
+								</li>
+							{% endfor %}
+						</ul>
+					{% endif %}
+				</nav>
+			</div>
+		</section>
+	</div>
+</header>

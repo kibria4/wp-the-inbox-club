@@ -1,0 +1,37 @@
+{# templates/post-types/book/single-book.twig #}
+<article class="pt-12 pb-16">
+  <div class="container mx-auto max-w-4xl">
+    <header class="mb-8">
+      <p class="text-xs uppercase tracking-wide text-neutral-500 mb-2">
+        {{ post.post_type_object.labels.singular_name ?? 'Book' }}
+      </p>
+
+      <h1 class="text-3xl md:text-4xl font-bold mb-3">
+        {{ post.title }}
+      </h1>
+
+      <p class="text-sm text-neutral-500">
+        {{ post.date('j M Y') }}
+      </p>
+    </header>
+
+    {% if post.thumbnail %}
+      <figure class="mb-8">
+        <img
+          src="{{ post.thumbnail.src }}"
+          alt="{{ post.thumbnail.alt }}"
+          class="w-full rounded-lg object-cover"
+        />
+        {% if post.thumbnail.caption %}
+          <figcaption class="mt-2 text-xs text-neutral-500">
+            {{ post.thumbnail.caption }}
+          </figcaption>
+        {% endif %}
+      </figure>
+    {% endif %}
+
+    <div class="prose max-w-none">
+      {{ post.content }}
+    </div>
+  </div>
+</article>

@@ -1,0 +1,57 @@
+{% import 'macro/el.twig' as el %}
+{# Determine alignment (Gutenberg passes this via block.align) #}
+{% set align = block.align ?? '' %}
+
+{# Base wrapper classes #}
+{% set wrapper_classes = [
+    className,
+    block.className,
+    'relative',
+    'z-10'
+]|join(' ')|trim %}
+
+<section
+	class="{{ wrapper_classes }}">
+	{# Only wrap inner content in container when NOT full width #}
+	{% set inner_classes = [] %}
+	{% if align != 'full' %}
+		{% set inner_classes = inner_classes|merge(['container', 'mx-auto']) %}
+	{% endif %}
+
+	<div class="{{ inner_classes|join(' ') }} bg-{{ block.backgroundColor|default('transparent') }} text-{{ block.textColor|default('black')}}">
+
+		<div class="wrapper-testimonials lg:w-[90%] mx-auto w-full pt-24 pb-60 z-20">
+
+			<div class="grid lg:grid-cols-3 grid-cols-1 gap-8 relative z-30">
+				<div class="wrapper-title">
+					{% if fields.title %}
+						<h2 class="font-oswald font-bold text-[100px] leading-[91px] text-white">{{ fields.title.label }}</h2>
+					{% endif %}
+				</div>
+				{% if fields.quotes %}
+					{% for quote in fields.quotes %}
+						<div class="wrapper-quote bg-{{ fields.quote_background_color|default('grey-200') }} p-8 relative" style="--wrapper-quote-img: url('{{ fields.quote_image.url }}')">
+							<div class="inner-profile flex flex-row gap-4 items-center justify-start">
+								<img src="{{ quote.photo.url }}" alt="{{ quote.photo.alt }}" class="h-[116px] w-[116px] object-contain"/>
+								<div class="text">
+									<h3 class="font-oswald font-bold text-[35.11px] leading-[43.88px] tracking-[1.05px] uppercase">{{ quote.name }}</h3>
+									<h4 class="font-oswald font-bold text-[17.55px] leading-[1rem] tracking-[0%] uppercase">{{ quote.role }}</h4>
+								</div>
+							</div>
+							<div class="inner-text mt-12">
+								<p class="font-montserrat font-normal text-[14.63px] leading-[30.72px]">{{ quote.quote }}</p>
+							</div>
+
+						</div>
+					{% endfor %}
+				{% endif %}
+			</div>
+
+		</div>
+	</div>
+	{% if fields.border_bottom_image %}
+		<div class="absolute -bottom-8 z-10 w-full mb-8">
+			<img src="{{ fields.border_bottom_image.url }}" alt="{{ fields.border_bottom_image.alt }}" class="mx-auto"/>
+		</div>
+	{% endif %}
+</section>

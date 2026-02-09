@@ -1,0 +1,26 @@
+{% import 'macro/el.twig' as el %}
+{# Determine alignment (Gutenberg passes this via block.align) #}
+{% set align = block.align ?? '' %}
+
+{# Base wrapper classes #}
+{% set wrapper_classes = [
+    className,
+    'py-12',
+    block.className,
+    'text-center',
+    'bg-' ~ (block.backgroundColor|default('transparent')),
+    'text-' ~ (block.textColor|default('black')),
+]|join(' ')|trim %}
+
+<section
+	class="{{ wrapper_classes }}">
+	{# Only wrap inner content in container when NOT full width #}
+	{% set inner_classes = [] %}
+	{% if align != 'full' %}
+		{% set inner_classes = inner_classes|merge(['container', 'mx-auto']) %}
+	{% endif %}
+
+	<div class="{{ inner_classes|join(' ') }}">
+		  <InnerBlocks />
+	</div>
+</section>

@@ -1,0 +1,99 @@
+{# templates/partials/buttons.twig
+   Expects:
+   - fields.buttons.buttons (from Boogiewoogie\Core\Field\Buttons)
+#}
+
+{% set flex_align = flex_align ?? 'items-center justify-center' %}
+{% set buttons = fields.buttons.buttons ?? [] %}
+
+{% if buttons and buttons|length %}
+  <div class="o-button-group flex flex-wrap gap-4 {{ flex_align }}">
+    {% for button in buttons %}
+      {% set link = button.link ?? null %}
+      {% if not link or not link.url %}
+        {% continue %}
+      {% endif %}
+
+      {% set style       = button.style ?? 'solid' %}
+      {% set bg_color    = button.background_color ?? null %}
+      {% set text_color  = button.text_color ?? null %}
+      {% set icon        = button.icon_image ?? null %}
+      {% set icon_pos    = button.icon_position ?? 'after' %}
+      {% set padding     = button.padding ?? 'md' %}
+
+      {# --- core/button wrapper classes --- #}
+      {% set wrapper_classes = [
+        'wp-block-button',
+        style ? 'is-style-' ~ style : ''
+      ] %}
+
+      {# --- link classes --- #}
+      {% set link_classes = ['wp-block-button__link'] %}
+
+      {# map padding semantic size to utility-ish classes #}
+      {% if padding == 'none' %}
+        {% set link_classes = link_classes|merge(['px-0','py-0']) %}
+      {% elseif padding == 'xs' %}
+        {% set link_classes = link_classes|merge(['px-2','py-1','text-xs']) %}
+      {% elseif padding == 'sm' %}
+        {% set link_classes = link_classes|merge(['px-3','py-1.5','text-sm']) %}
+      {% elseif padding == 'lg' %}
+        {% set link_classes = link_classes|merge(['px-6','py-3','text-base']) %}
+      {% elseif padding == 'xl' %}
+        {% set link_classes = link_classes|merge(['px-8','py-4','text-base']) %}
+      {% else %}
+        {# md (default) #}
+        {% set link_classes = link_classes|merge(['px-4','py-2','text-sm']) %}
+      {% endif %}
+
+      {# attach theme.json colour classes if present #}
+      {% if bg_color %}
+        {% set link_classes = link_classes|merge([
+          'has-background',
+          'has-' ~ bg_color ~ '-background-color'
+        ]) %}
+      {% endif %}
+
+      {% if text_color %}
+        {% set link_classes = link_classes|merge([
+          'has-text-color',
+          'has-' ~ text_color ~ '-color'
+        ]) %}
+      {% endif %}
+
+      <div class="{{ wrapper_classes|join(' ')|trim }}">
+        <a
+          href="{{ link.url }}"
+          class="{{ link_classes|join(' ')|trim }}"
+          {% if link.target %}target="{{ link.target }}"{% endif %}
+        >
+          {# icon before / above #}
+          {% if icon and icon_pos in ['before','above'] %}
+            <span class="o-button__icon o-button__icon--{{ icon_pos }} inline-flex mr-2">
+              <img
+                src="{{ icon.url }}"
+                alt="{{ icon.alt ?: '' }}"
+                class="inline-block max-h-6 w-auto"
+              />
+            </span>
+          {% endif %}
+
+          <span class="o-button__label inline-block">
+            {{ link.title ?: 'Learn more' }}
+          </span>
+
+          {# icon after / below #}
+          {% if icon and icon_pos in ['after','below'] %}
+            <span class="o-button__icon o-button__icon--{{ icon_pos }} inline-flex ml-2">
+              <img
+                src="{{ icon.url }}"
+                alt="{{ icon.alt ?: '' }}"
+                class="inline-block max-h-6 w-auto"
+              />
+            </span>
+          {% endif %}
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
