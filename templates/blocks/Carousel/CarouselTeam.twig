@@ -1,54 +1,154 @@
 {% import 'macro/el.twig' as el %}
 {# Determine alignment (Gutenberg passes this via block.align) #}
 {% set align = block.align ?? '' %}
+{# Generate unique ID for this slider instance #}
+{% set slider_id = 'carousel-team-' ~ random() %}
 
 {# Base wrapper classes #}
 {% set wrapper_classes = [
     className,
-    'py-12',
     block.className,
     'text-center',
-    'bg-' ~ (block.backgroundColor|default('transparent')),
-    'text-' ~ (block.textColor|default('black')),
+    'relative'
 ]|join(' ')|trim %}
 
-<section class="{{ wrapper_classes }}">
-  {# Only wrap inner content in container when NOT full width #}
-  {% set inner_classes = [] %}
-  {% if align != 'full' %}
-    {% set inner_classes = inner_classes|merge(['container', 'mx-auto']) %}
-  {% endif %}
+<section
+	{% if fields.block_id %} id="{{ fields.block_id|replace(' ', '-') }}" {% endif %} class="{{ wrapper_classes }}">
+	{# Only wrap inner content in container when NOT full width #}
+	{% set inner_classes = [] %}
+	{% set bg_color = block.backgroundColor|default('transparent') %}
+	{% if align != 'full' %}
+		{% set inner_classes = inner_classes|merge([
+			'container', 
+			'mx-auto',
+			'text-' ~ (block.textColor|default('white'))
+			]) %}
+		{# Add background color class only if no background image #}
+		{% if not fields.background_image %}
+			{% set inner_classes = inner_classes|merge(['bg-' ~ bg_color]) %}
+		{% endif %}
+	{% endif %}
 
-  <div class="{{ inner_classes|join(' ') }}">
-    {% if fields.image %}
-      <div class="mt-8">
-        <img src="{{ fields.image.url }}" alt="{{ fields.image.alt }}" class="mx-auto" />
+	<div class="{{ inner_classes|join(' ') }} text-{{ block.textColor|default('white')}}"{% if fields.background_image %} style="background-color: var(--wp--preset--color--{{ bg_color }}); background-image: url('{{ fields.background_image.url }}'); background-size: cover; background-repeat: no-repeat; background-position: center;"{% endif %}>
+		<div class="lg:w-[90%] mx-auto w-full pb-24">
+      <div class="wrapper-title lg:w-1/2 w-full pt-24 pb-12">
+        {% if fields.title %}
+          {{ el.heading({ 
+              field: fields.title, 
+              block: block,
+              colors: color,
+              classes: 'titles__main text-6xl font-oswald font-bold text-[100px] leading-[91px] tracking-[0px] text-left uppercase',
+              removeHeadingClass: true
+              }) 
+          }}
+        {% endif %}      
       </div>
-    {% endif %}
 
-    {% if fields.title %}
-        {{ el.heading({ 
-            field: fields.title, 
-            block: block,
-            colors: color,
-            classes: 'titles__main text-6xl font-bold' }) 
-        }}
-    {% endif %}
+			<div class="wrapper-slider">
+				{% if fields.slides %}
+					<div class="relative flex items-center gap-6">
+						{# Previous Arrow #}
+						<button class="swiper-button-prev-{{ slider_id }} flex-shrink-0 cursor-pointer transition-opacity hover:opacity-70" aria-label="Previous slide">
+							<svg width="63" height="66" viewBox="0 0 63 66" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M62.4028 66L30.3057 66L-2.88495e-06 33L30.3057 2.80602e-06L62.4028 0L31.9479 33L62.4028 66Z" fill="#6AECFF"/>
+							</svg>
+						</button>
 
-    {% if fields.content %}
-      <div class="leading-relaxed text-2xl text-black">
-        {{ fields.content|raw }}
+						{# Swiper Container #}
+						<div class="swiper swiper-{{ slider_id }} flex-1 overflow-hidden pb-24">
+							<div class="swiper-wrapper">
+								{% for slide in fields.slides %}
+									<div class="swiper-slide">
+										<div class="flex flex-col items-center gap-4">
+											{% if slide.photo %}
+												<div class="w-[284px] h-[284px] rounded-full overflow-hidden flex-shrink-0">
+													<img src="{{ slide.photo.sizes.medium_large ?? slide.photo.url }}" 
+													     alt="{{ slide.name ?? '' }}" 
+													     class="w-full h-full object-cover">
+												</div>
+											{% endif %}
+											
+											{% if slide.name %}
+												<h3 class="font-oswald font-bold text-[44.37px] leading-[100%] tracking-[0.03em] text-center uppercase">
+													{{ slide.name }}
+												</h3>
+											{% endif %}
+											
+											{% if slide.role %}
+												<p class="font-montserrat font-bold text-[18.49px] leading-[38.82px] tracking-0 text-center">
+													{{ slide.role }}
+												</p>
+											{% endif %}
+											
+											{% if slide.content %}
+												<p class="font-montserrat font-normal text-[18.49px] leading-[38.82px] tracking-0 text-center">
+													{{ slide.content }}
+												</p>
+											{% endif %}
+										</div>
+									</div>
+								{% endfor %}
+							</div>
+						</div>
+
+						{# Next Arrow #}
+						<button class="swiper-button-next-{{ slider_id }} flex-shrink-0 cursor-pointer transition-opacity hover:opacity-70" aria-label="Next slide">
+							<svg width="63" height="66" viewBox="0 0 63 66" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M0 0H32.0971L62.4028 33L32.0971 66H0L30.455 33L0 0Z" fill="#6AECFF"/>
+							</svg>
+						</button>
+					</div>
+
+					{# Swiper CSS and JS from CDN #}
+					<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+					<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+					{# Custom CSS to ensure arrows are always visible #}
+					<style>
+						.swiper-button-prev-{{ slider_id }},
+						.swiper-button-next-{{ slider_id }} {
+							display: flex !important;
+							align-items: center;
+							justify-content: center;
+						}
+						.swiper-button-prev-{{ slider_id }}.swiper-button-lock,
+						.swiper-button-next-{{ slider_id }}.swiper-button-lock {
+							display: flex !important;
+							opacity: 1 !important;
+							pointer-events: auto !important;
+              position: relative;
+              top: -7.5rem;
+						}
+					</style>
+
+					{# Initialize Swiper for this specific instance #}
+					<script>
+						document.addEventListener('DOMContentLoaded', function() {
+							new Swiper('.swiper-{{ slider_id }}', {
+								slidesPerView: 2,
+								slidesPerGroup: 1,
+								spaceBetween: 24,
+								loop: true,
+								autoplay: {
+									delay: 8000,
+									disableOnInteraction: false,
+								},
+								navigation: {
+									nextEl: '.swiper-button-next-{{ slider_id }}',
+									prevEl: '.swiper-button-prev-{{ slider_id }}',
+								},
+								breakpoints: {
+									1024: {
+										slidesPerView: 3,
+										slidesPerGroup: 1,
+										spaceBetween: 24,
+									}
+								}
+							});
+						});
+					</script>
+				{% endif %}
       </div>
-    {% endif %}
-
-    {% if fields.buttons %}
-        {% include 'partials/buttons.twig' %}
-    {% endif %}
-    
-    {% if fields.cta_link %}
-      <a href="{{ fields.cta_link.url }}" class="btn btn-primary">
-        {{ fields.cta_link.title }}
-      </a>
-    {% endif %}
-  </div>
+		</div>
+	</div>
 </section>
