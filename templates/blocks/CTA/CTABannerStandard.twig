@@ -1,0 +1,53 @@
+{% import 'macro/el.twig' as el %}
+{# Determine alignment (Gutenberg passes this via block.align) #}
+{% set align = block.align ?? '' %}
+
+{# Base wrapper classes #}
+{% set wrapper_classes = [
+    className,
+    block.className,
+    'text-center',
+	'relative'
+]|join(' ')|trim %}
+
+<section
+	class="{{ wrapper_classes }}">
+	{# Only wrap inner content in container when NOT full width #}
+	{% set inner_classes = [] %}
+	{% if align != 'full' %}
+		{% set inner_classes = inner_classes|merge(['container', 'mx-auto']) %}
+	{% endif %}
+
+	<div class="{{ inner_classes|join(' ') }} bg-{{ block.backgroundColor|default('transparent') }} text-{{ block.textColor|default('white')}}">
+		<div class="logos-content {{ fields.width_desktop|default('w-full') }} mx-auto w-full pt-12 pb-32 px-4 flex flex-col items-center justify-center gap-6">
+      {% if fields.title %}
+        {{ el.heading({ 
+            field: fields.title, 
+            block: block,
+            colors: color,
+            classes: 'titles__main font-oswald uppercase text-[64px] font-semibold leading-relaxed tracking-[2px] text-center',
+            removeHeadingClass: true
+             }) 
+        }}
+      {% endif %}
+      {% if fields.content %}
+        <div class="mt-4 font-montserrat font-normal text-[20px] text-center leading-10.5 tracking-normal">
+          {{ fields.content|raw }}
+        </div>
+       {% endif %}
+      {% if fields.image %}
+        <div class="wrapper-quote-image w-full mb-8 flex flex-col items-center justify-center mx-auto">
+          <img src="{{ fields.image.url }}" alt="{{ fields.image.alt }}" title="{{ fields.image.title }}" class="w-auto h-16 object-contain"/>
+        </div>
+      {% endif %}
+
+		</div>
+	</div>
+
+  {% if fields.bottom_border_image %}
+		<div class="absolute -bottom-10 z-10 w-full mb-8">
+			<img src="{{ fields.bottom_border_image.url }}" alt="{{ fields.bottom_border_image.alt }}" class="mx-auto"/>
+		</div>
+	{% endif %}
+	
+</section>
