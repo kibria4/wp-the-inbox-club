@@ -15,10 +15,15 @@
 	class="{{ wrapper_classes }}">{# Only wrap inner content in container when NOT full width #}
 	{% set inner_classes = [] %}
 	{% if align != 'full' %}
-		{% set inner_classes = inner_classes|merge(['container', 'mx-auto']) %}
+		{% set inner_classes = inner_classes|merge([
+			'container', 
+			'mx-auto',
+			'bg-' ~ (block.backgroundColor|default('transparent')),
+			'text-' ~ (block.textColor|default('white'))
+			]) %}
 	{% endif %}
 
-	<div class="{{ inner_classes|join(' ') }}">
+	<div class="{{ inner_classes|join(' ') }} bg-{{ block.backgroundColor|default('transparent') }} text-{{ block.textColor|default('white')}}">
 		<div class="lg:w-[90%] mx-auto w-full">
 
 			{% if fields.title %}
