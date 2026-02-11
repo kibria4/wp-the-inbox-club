@@ -30,8 +30,8 @@
 	{% endif %}
 
 	<div class="{{ inner_classes|join(' ') }} text-{{ block.textColor|default('white')}}"{% if fields.background_image %} style="background-color: var(--wp--preset--color--{{ bg_color }}); background-image: url('{{ fields.background_image.url }}'); background-size: cover; background-repeat: no-repeat; background-position: center;"{% endif %}>
-		<div class="lg:w-[90%] mx-auto w-full pb-24">
-      <div class="wrapper-title lg:w-1/2 w-full pt-24 pb-12">
+		<div class="lg:w-[90%] mx-auto w-full pb-52">
+      <div class="wrapper-title lg:w-[40%] w-full pt-24 pb-12">
         {% if fields.title %}
           {{ el.heading({ 
               field: fields.title, 
@@ -151,4 +151,10 @@
       </div>
 		</div>
 	</div>
+
+  {% if fields.bottom_border_image %}
+		<div class="absolute -bottom-10 z-10 w-full mb-8">
+			<img src="{{ fields.bottom_border_image.url }}" alt="{{ fields.bottom_border_image.alt }}" class="mx-auto"/>
+		</div>
+	{% endif %}
 </section>

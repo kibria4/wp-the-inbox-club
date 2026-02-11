@@ -22,7 +22,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     root: __dirname,
-    base: '/',
+    base: './',
     build: {
       outDir: path.resolve(__dirname, 'dist'),
       emptyOutDir: true,

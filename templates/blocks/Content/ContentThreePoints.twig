@@ -1,0 +1,98 @@
+{% import 'macro/el.twig' as el %}
+{# Determine alignment (Gutenberg passes this via block.align) #}
+{% set align = block.align ?? '' %}
+{# Generate unique ID for this slider instance #}
+{% set slider_id = 'carousel-team-' ~ random() %}
+
+{# Base wrapper classes #}
+{% set wrapper_classes = [
+    className,
+    block.className,
+    'text-center',
+    'relative',
+    '-mb-8'
+]|join(' ')|trim %}
+
+<section
+	{% if fields.block_id %} id="{{ fields.block_id|replace(' ', '-') }}" {% endif %} class="{{ wrapper_classes }}">
+	{# Only wrap inner content in container when NOT full width #}
+	{% set inner_classes = [] %}
+	{% set bg_color = block.backgroundColor|default('transparent') %}
+	{% if align != 'full' %}
+		{% set inner_classes = inner_classes|merge([
+			'container', 
+			'mx-auto',
+			'text-' ~ (block.textColor|default('white'))
+			]) %}
+		{# Add background color class only if no background image #}
+		{% if not fields.background_image %}
+			{% set inner_classes = inner_classes|merge(['bg-' ~ bg_color]) %}
+		{% endif %}
+	{% endif %}
+
+	<div class="{{ inner_classes|join(' ') }} text-{{ block.textColor|default('white')}}" {% if fields.background_image %} style="background-color: var(--wp--preset--color--{{ bg_color }}); background-image: url('{{ fields.background_image.url }}'); background-size: cover; background-repeat: no-repeat; background-position: center;" {% endif %}>
+		<div class="lg:w-[90%] mx-auto w-full pb-52">
+			{% if fields.title %}
+				{{ el.heading({ 
+            field: fields.title, 
+            block: block,
+            colors: color,
+            classes: 'titles__main font-oswald font-bold text-[100px] leading-[100px] tracking-[0px] text-center uppercase pt-12',
+            removeHeadingClass: true
+             }) 
+        }}
+			{% endif %}
+
+			<div class="wrapper-innerbox rounded-xl bg-{{ fields.inner_box_bg_color|default('blue-mid') }} text-{{ fields.inner_box_text_color|default('white') }} p-8 lg:p-16 mt-12">
+				{% if fields.inner_box_title %}
+					{{ el.heading({ 
+              field: fields.inner_box_title, 
+              block: block,
+              colors: color,
+              classes: 'titles__main font-oswald font-bold text-[50px] leading-[60px] tracking-[0px] text-center uppercase',
+              removeHeadingClass: true
+              }) 
+          }}
+				{% endif %}
+				{% if fields.points %}
+					<div class="wrapper-points grid {{ fields.grid_columns_desktop|default('lg:grid-cols-3') }} grid-cols-1 gap-8 mt-8">
+						{% for point in fields.points %}
+							<div
+								class="point flex flex-col items-center justify-center mx-auto text-center rounded-xl bg-{{ fields.point_bg_color|default('purple-dark') }} text-{{ fields.point_text_color|default('white') }} p-6 rounded">
+								{# <h3 class=" mb-4">{{ point.title }}</h3> #}
+								<p class="font-oswald font-bold text-[40px] leading-[60px] tracking-[0px] uppercase text-center">{{ point.content }}</p>
+							</div>
+						{% endfor %}
+					</div>
+				{% endif %}
+				{% if fields.inner_box_summary_content %}
+					<div class="wrapper-summary-content lg:w-[90%] w-full mx-auto pt-24 font-montserrat font-normal text-[35px] leading-[42px] tracking-[0px] text-center">
+						{{ fields.inner_box_summary_content|raw }}
+					</div>
+				{% endif %}
+				{% if fields.inner_box_mail_image %}
+					<div class="wrapper-mail-image mt-12">
+						<a href="{{ fields.inner_box_mail_link.url }}">
+							<img src="{{ fields.inner_box_mail_image.url }}" alt="{{ fields.inner_box_mail_image.alt }}" title="{{ fields.inner_box_mail_image.title }}" class="mx-auto w-15"/>
+						</a>
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+	{% if fields.cta_link %}
+		<div class="{{ inner_classes|join(' ') }} relative -top-28 z-30">
+			<div class="wrapper-cta flex flex-col items-center justify-center">
+				<a href="{{ fields.cta_link.url }}">
+					<img src="{{ fields.cta_image.url }}" alt="{{ fields.cta_image.alt }}" title="{{ fields.cta_image.title }}" class="mx-auto"/>
+				</a>
+			</div>
+		</div>
+	{% endif %}
+
+	{% if fields.bottom_border_image %}
+		<div class="absolute bottom-16 z-10 w-full -mb-8">
+			<img src="{{ fields.bottom_border_image.url }}" alt="{{ fields.bottom_border_image.alt }}" class="mx-auto"/>
+		</div>
+	{% endif %}
+</section>

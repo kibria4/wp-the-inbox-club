@@ -41,6 +41,8 @@ class CarouselTeam extends AbstractBlock
                         ->helperText('Add a description for this point'),
             ]),
 
+            Image::make('Bottom Border Image', 'bottom_border_image'),
+
             Text::make('Block ID', 'block_id'),
         ];
     }
