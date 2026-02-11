@@ -1,0 +1,85 @@
+{% import 'macro/el.twig' as el %}
+{# Determine alignment (Gutenberg passes this via block.align) #}
+{% set align = block.align ?? '' %}
+{# Generate unique ID for this slider instance #}
+{% set slider_id = 'carousel-team-' ~ random() %}
+
+{# Base wrapper classes #}
+{% set wrapper_classes = [
+    className,
+    block.className,
+    'text-center',
+    'relative'
+]|join(' ')|trim %}
+
+<section
+	{% if fields.block_id %} id="{{ fields.block_id|replace(' ', '-') }}" {% endif %} class="{{ wrapper_classes }}">
+	{# Only wrap inner content in container when NOT full width #}
+	{% set inner_classes = [] %}
+	{% set bg_color = block.backgroundColor|default('transparent') %}
+	{% if align != 'full' %}
+		{% set inner_classes = inner_classes|merge([
+			'container', 
+			'mx-auto',
+			'text-' ~ (block.textColor|default('white'))
+			]) %}
+	{% endif %}
+
+	<div class="{{ inner_classes|join(' ') }} text-{{ block.textColor|default('white')}} bg-{{ bg_color }}"{% if fields.background_image %} style="background-color: var(--wp--preset--color--{{ bg_color }}); background-image: url('{{ fields.background_image.url }}'); background-size: cover; background-repeat: no-repeat; background-position: center;"{% endif %}>
+		<div class="lg:w-[90%] mx-auto w-full pt-24 pb-12 flex flex-col items-center justify-center">
+    
+    {% if fields.title %}
+        {{ el.heading({ 
+            field: fields.title, 
+            block: block,
+            colors: color,
+            classes: 'titles__main text-6xl font-bold uppercase' }) 
+        }}
+    {% endif %}
+
+    {% if fields.options %}
+    <div class="wrapper-options w-full grid lg:grid-cols-2 grid-cols-1 gap-8 pt-12 pb-52">
+      {% for option in fields.options %}
+        <div class="wrapper-option w-full flex flex-col items-center justify-center mx-auto text-center lg:w-[619px] lg:h-[489px] px-8 py-16" style="background-image: url('{{ option.background_image.url }}'); background-size: cover; background-repeat: no-repeat; background-position: center;">
+          {% if option.title %}
+            <h3 class="font-oswald font-semibold text-[49px] leading-[49px] tracking-[1.5px] text-center uppercase">{{ option.title }}</h3>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>    
+    {% endif %}
+
+  </div>
+  {% if fields.cta_link %}
+		<div class="{{ inner_classes|join(' ') }} pb-30 bg-{{ block.backgroundColor|default('transparent') }} text-{{ block.textColor|default('white')}}">
+			<div class="wrapper-cta flex flex-col items-center justify-center bg-{{ block.backgroundColor|default('transparent') }}">
+				<a href="{{ fields.cta_link.url }}">
+					<img src="{{ fields.cta_image.url }}" alt="{{ fields.cta_image.alt }}" title="{{ fields.cta_image.title }}" class="mx-auto relative top-20  z-30"/>
+				</a>
+			</div>
+		</div>
+  {% elseif fields.bottom_banner_title %}
+		<div class="{{ inner_classes|join(' ') }} absolute bottom-36  text-{{ block.textColor|default('white')}}">
+      <div class="wrapper-cta font-oswald font-normal text-[18.74px] leading-[26.04px] tracking-[3px] uppercase flex flex-col items-center justify-center relative top-20 z-30 rounded-tl-xl rounded-tr-xl pt-12 pb-8 px-8 lg:w-3/5 mx-auto bg-{{ fields.bottom_banner_bg_color|default('purple') }}">
+			{% if fields.bottom_banner_title %}
+
+        {{ el.heading({ 
+            field: fields.bottom_banner_title, 
+            block: block,
+            colors: color,
+            classes: 'titles__summary font-oswald font-medium text-[51.2px] leading-[71.33px] tracking-[8.7px] text-center uppercase',
+            removeHeadingClass: true
+             }) 
+        }}
+    {% endif %}
+				{{ fields.bottom_banner_content|raw }}
+			</div>
+		</div>
+	{% endif %}
+
+	{% if fields.bottom_border_image %}
+		<div class="absolute -bottom-8 left-0 z-10 w-full mb-8">
+			<img src="{{ fields.bottom_border_image.url }}" alt="{{ fields.bottom_border_image.alt }}" class="mx-auto"/>
+		</div>
+	{% endif %}
+</section>

@@ -84,6 +84,10 @@
 }
 
 @layer utilities {
+  html {
+    scroll-behavior: smooth;
+  }
+  
   a:where(:not(.wp-element-button)) {
     text-decoration: none !important;
   }

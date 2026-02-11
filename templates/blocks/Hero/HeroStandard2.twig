@@ -1,0 +1,76 @@
+{% import 'macro/el.twig' as el %}
+{# Determine alignment (Gutenberg passes this via block.align) #}
+{% set align = block.align ?? '' %}
+{# Generate unique ID for this slider instance #}
+{% set slider_id = 'carousel-team-' ~ random() %}
+
+{# Base wrapper classes #}
+{% set wrapper_classes = [
+    className,
+    block.className,
+    'relative'
+]|join(' ')|trim %}
+
+<section
+	{% if fields.block_id %} id="{{ fields.block_id|replace(' ', '-') }}" {% endif %} class="{{ wrapper_classes }}">
+	{# Only wrap inner content in container when NOT full width #}
+	{% set inner_classes = [] %}
+	{% set bg_color = block.backgroundColor|default('transparent') %}
+	{% if align != 'full' %}
+		{% set inner_classes = inner_classes|merge([
+			'container', 
+			'mx-auto',
+			'text-' ~ (block.textColor|default('white'))
+			]) %}
+	{% endif %}
+
+	<div class="{{ inner_classes|join(' ') }} text-{{ block.textColor|default('white')}} bg-{{ bg_color }}" {% if fields.background_image %} style="background-color: var(--wp--preset--color--{{ bg_color }}); background-image: url('{{ fields.background_image.url }}'); background-size: cover; background-repeat: no-repeat; background-position: center;" {% endif %}>
+		<div class="lg:w-[90%] mx-auto w-full pt-24 pb-52 flex flex-col items-center justify-center">
+			
+
+			{% if fields.title %}
+				{{ el.heading({ 
+            field: fields.title, 
+            block: block,
+            colors: color,
+            classes: 'titles__main font-oswald font-bold text-[92.38px] leading-[92.38px] uppercase mb-8',
+            removeHeadingClass: true
+             }) 
+        }}
+			{% endif %}
+
+      {% if fields.image and fields.overlay_content %}
+				<div class="mt-8 relative">
+					<img src="{{ fields.image.url }}" alt="{{ fields.image.alt }}" class="mx-auto rounded-4xl"/>
+          <div class="overlay-bg absolute bottom-0 rounded-4xl w-full h-fit bg-linear-to-t from-black to-transparent"></div>
+          <div class="overlay absolute bottom-0 rounded-4xl px-8 pb-8 lg:w-[85%] h-fit font-montserrat font-normal text-[29.32px] leading-[51.25px]">{{ fields.overlay_content|raw }}</div>
+				</div>
+			{% endif %}
+
+			{% if fields.bottom_content %}
+      <div class="wrapper-bottom-content mx-0">
+				<div class="font-oswald font-bold text-[34px] leading-8.5 tracking-0 uppercase mt-12 lg:w-3/4">
+					{{ fields.bottom_content|raw }}
+				</div>
+      </div>
+			{% endif %}
+		</div>
+	</div>
+
+  {% if fields.bottom_border_image %}
+		<div class="absolute bottom-12 z-10 w-full -mb-12">
+			<img src="{{ fields.bottom_border_image.url }}" alt="{{ fields.bottom_border_image.alt }}" class="mx-auto"/>
+		</div>
+	{% endif %}
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelector('.titles__main span').classList.add('text-{{ fields.title_highlight_text_color|default('blue-light') }}');
+  const overlay = document.querySelector('.overlay');
+  const overlayBg = document.querySelector('.overlay-bg');
+  if (overlay && overlayBg) {
+   overlayBg.style.height = overlay.offsetHeight + 32 + 'px'; // 32px is the padding (16px top + 16px bottom) 
+  }
+});
+</script>

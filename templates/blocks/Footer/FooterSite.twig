@@ -12,7 +12,8 @@
 ]|join(' ')|trim %}
 
 
-<footer class="site-footer relative pt-52" role="contentinfo">
+<footer 
+	{% if fields.block_id %} id="{{ fields.block_id|replace(' ', '-') }}"{% endif %} class="site-footer relative pt-52" role="contentinfo">
 	<div class="container absolute z-50 top-8 left-1/2 -translate-x-1/2 w-full max-h-60 h-60  pointer-events-none" style="background: url({{ fields.footer_top_image_banner.url }}) no-repeat center / cover"></div>
 	<div class="container relative overflow-hidden" style="background: url({{ fields.footer_background_image.url }}) no-repeat center / cover">
 		{# Clapperboard img #}

@@ -1,13 +1,14 @@
 <?php
 namespace Boogiewoogie\Theme\Block\Footer;
 
-use Boogiewoogie\Core\Block\AbstractBlock;
+use Extended\ACF\Fields\Link;
+use Extended\ACF\Fields\Text;
+use Extended\ACF\Fields\Image;
+use Extended\ACF\Fields\Repeater;
 use Boogiewoogie\Core\Field\Color;
 use Boogiewoogie\Core\Field\Heading;
-use Extended\ACF\Fields\Image;
-use Extended\ACF\Fields\Link;
-use Extended\ACF\Fields\Repeater;
 use Extended\ACF\Fields\WYSIWYGEditor;
+use Boogiewoogie\Core\Block\AbstractBlock;
 
 class FooterSite extends AbstractBlock
 {
@@ -44,6 +45,8 @@ class FooterSite extends AbstractBlock
             ...new Heading(label: 'Form Heading', name: 'footer_form_heading', defaultLevel: 'h3', defaultStyle: 'h3', defaultTextColor: 'black'),
             WYSIWYGEditor::make('Form Content', 'footer_form_content'),
             ...new Color(label: 'Bottom Bar BG Colour', name: 'footer_bottom_bar_bg_color', default: 'purple-dark'),
+
+            Text::make('Block ID', 'block_id'),
         ];
     }
 

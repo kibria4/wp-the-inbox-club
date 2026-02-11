@@ -42,6 +42,21 @@ max-w-1/2
 mt-4 
 mt-8
 
+wrapper-option 
+hover:scale-115 
+w-full 
+flex 
+flex-col 
+items-center 
+justify-center
+mx-auto 
+text-center 
+px-8  
+transition-transform 
+duration-200
+lg:gap-0
+gap-4
+
 lg:w-[57.5%]
 lg:w-4/5
 lg:w-3/4
